@@ -1,27 +1,41 @@
 #include <iostream>
 #include <string>
 #include "database.h"
+#include "importer.h"
 
 int main(int argc, char* argv[]) {
-    if (argc != 2 || std::string(argv[1]) != "init") {
-        std::cout << "Usage: ./testtrack init\n";
+    std::string command = argc > 1 ? argv[1] : "";
+
+    if (!((command == "init" && argc == 2) ||
+          (command == "import" && argc == 3))) {
+        std::cerr << "Usage: ./testtrack init\n"
+                  << "       ./testtrack import <file.csv>\n";
         return 1;
     }
 
     sqlite3* db = openDatabase("testtrack.db");
 
-    if (db == nullptr) {
+    if (!db)
         return 1;
-    }
 
-    if (!initializeDatabase(db)) {
-        closeDatabase(db);
-        return 1;
-    }
+    bool success = initializeDatabase(db);
 
-    std::cout << "Database initialized successfully.\n";
+    if (success && command == "init") {
+        std::cout << "Database initialized successfully.\n";
+    }
+    else if (success && command == "import") {
+        std::vector<TestResult> results;
+
+        success = importCSV(argv[2], results) &&
+                  saveRun(db, argv[2], results);
+
+        if (success) {
+            std::cout << "Imported " << results.size()
+                      << " test results.\n";
+        }
+    }
 
     closeDatabase(db);
 
-    return 0;
+    return success ? 0 : 1;
 }
