@@ -1,0 +1,10 @@
+*.o
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+__pycache__/
+*.pyc
+/testtrack
+/build/
+/data/results.csv
