@@ -2,6 +2,10 @@
 
 A command-line software test management system written in C++ using SQLite. TestTrack imports test datasets, stores execution history, generates reports, and automates test collection through Python.
 
+## Project Purpose
+
+I started TestTrack as a hands-on project to build on my experience with C and Python while learning C++ and SQL. My goal was to gain practical experience with relational database design, data validation, database integration, and test automation. I used AI-assisted guidance during development and am continuing to work through the reporting and automation components to deepen my understanding.
+
 ## Features
 
 - CSV parsing and input validation.
